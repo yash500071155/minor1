@@ -1,0 +1,136 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+
+struct bin_tree {
+char data;
+struct bin_tree * right, * left;
+};
+typedef struct bin_tree node;
+
+void insert(node ** tree, char val)
+{
+    node *temp = NULL;
+    if(!(*tree))
+    {
+        temp = (node *)malloc(sizeof(node));
+        temp->left = temp->right = NULL;
+        temp->data = val;
+        *tree = temp;
+        return;
+    }
+
+    if(val < (*tree)->data)
+    {
+        insert(&(*tree)->left, val);
+    }
+    else if(val > (*tree)->data)
+    {
+        insert(&(*tree)->right, val);
+    }
+
+}
+
+void print_preorder(node * tree)
+{
+    if (tree)
+    {
+        printf("\n%c",tree->data);
+        print_preorder(tree->left);
+        print_preorder(tree->right);
+    }
+
+}
+
+void print_inorder(node * tree)
+{
+    if (tree)
+    {
+        print_inorder(tree->left);
+        printf("\n%c",tree->data);
+        print_inorder(tree->right);
+    }
+}
+
+void print_postorder(node * tree)
+{
+    if (tree)
+    {
+        print_postorder(tree->left);
+        print_postorder(tree->right);
+        printf("\n%c",tree->data);
+    }
+}
+
+void deltree(node * tree)
+{
+    if (tree)
+    {
+        deltree(tree->left);
+        deltree(tree->right);
+        free(tree);
+    }
+}
+
+
+void main()
+{
+    node *root;
+    node *tmp;
+
+    root = NULL;
+
+    char str1[100];
+    char newString[10][10];
+    int i,j,k,temp,m;
+    char newChar[100];
+
+    printf("\nUniversity of petroleum and energy studies.:\n");
+    printf("\n Input a string for which you want to perform Tockenization : ");
+    fgets(str1, sizeof str1, stdin);
+
+    j=0;
+    temp=0;
+    m = 0;
+    for(i=0;i<=(strlen(str1));i++){
+        if(str1[i]==' '||str1[i]=='\0')
+        {
+            newString[temp][j]='\0';
+            temp++;
+            j=0;
+        }
+        else
+        {
+            newString[temp][j]=str1[i];
+            newChar[m] = str1[i];
+            m++;
+            j++;
+        }
+    }
+    printf("\n tokens after split by space are :\n");
+    for(i=0;i < temp;i++)
+        printf(" %s\n",newString[i]);
+
+    for(i=0;i < m;i++){
+        //printf(" %c\n",newChar[i]);
+        insert(&root, newChar[i]);
+    }
+    /*
+
+    insert(&root, 'H');
+    insert(&root, 'E');
+    insert(&root, 'L');
+    insert(&root, 'L');
+    insert(&root, 'O');
+*/
+    printf("\nPre Order Display");
+    print_preorder(root);
+
+    printf("\nIn Order Display");
+    print_inorder(root);
+
+    printf("\nPost Order Display");
+    print_postorder(root);
+
+    deltree(root);
+}
